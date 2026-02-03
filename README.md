@@ -18,7 +18,7 @@ Visual Kanban board for BMAD sprint status in Claude Code.
 ## Quick Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thibaultspriet/bmad-sprint-board/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/thibaultspriet/bmad-sprint-board/master/install.sh | bash
 ```
 
 The installer will prompt you to choose:
