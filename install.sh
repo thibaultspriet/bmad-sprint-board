@@ -5,7 +5,7 @@
 set -euo pipefail
 
 # GitHub raw URL base
-GITHUB_RAW_BASE="https://raw.githubusercontent.com/thibaultmthh/bmad-sprint-board/main"
+GITHUB_RAW_BASE="https://raw.githubusercontent.com/thibaultspriet/bmad-sprint-board/main"
 
 # Cleanup on failure
 CLEANUP_FILES=()
