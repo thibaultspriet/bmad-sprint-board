@@ -63,7 +63,7 @@ echo -e "  ${BLUE}[P]${RESET} Project - Command only available in this project"
 echo -e "              Installs to: ./.claude/scripts/ and ./.claude/commands/"
 echo ""
 echo -n "Your choice [G/P]: "
-read -r mode
+read -r mode < /dev/tty
 
 # Normalize input
 mode=$(echo "$mode" | tr '[:lower:]' '[:upper:]')
@@ -108,7 +108,7 @@ if [[ ${#EXISTING_FILES[@]} -gt 0 ]]; then
     echo -e "  ${BLUE}[A]${RESET} Abort     - Cancel installation"
     echo ""
     echo -n "Your choice [O/S/A]: "
-    read -r action
+    read -r action < /dev/tty
 
     action=$(echo "$action" | tr '[:lower:]' '[:upper:]')
 
