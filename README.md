@@ -2,18 +2,7 @@
 
 Visual Kanban board for BMAD sprint status in Claude Code.
 
-```
-  ╔══════════════════╦══════════════════╦══════════════════╦══════════════════╦══════════════════╗
-  ║                           SPRINT BOARD: my-project                                          ║
-  ╠══════════════════╬══════════════════╬══════════════════╬══════════════════╬══════════════════╣
-  ║ BACKLOG          ║ READY            ║ IN-PROGRESS      ║ REVIEW           ║ DONE             ║
-  ╠──────────────────┼──────────────────┼──────────────────┼──────────────────┼──────────────────╣
-  ║ 1-3-auth-flow    │ 1-2-api-setup    │ 1-1-db-schema    │                  │ 1-0-init-proj    ║
-  ║ 1-4-dashboard    │                  │                  │                  │                  ║
-  ╚══════════════════╩══════════════════╩══════════════════╩══════════════════╩══════════════════╝
-
-  Stories: 5 total | 2 backlog | 1 ready | 1 in-progress | 0 review | 1 done (20%)
-```
+![Sprint Board in Terminal](resource/board_terminal.png)
 
 ## Quick Install
 
@@ -22,8 +11,8 @@ curl -fsSL https://raw.githubusercontent.com/thibaultspriet/bmad-sprint-board/ma
 ```
 
 The installer will prompt you to choose:
-- **Global**: Command available from any directory in Claude Code
-- **Project**: Command only available in the current project
+- **Global** or **Project** installation mode
+- **Terminal shortcut**: Creates `./sprint-board` in your project for direct terminal access
 
 ## Requirements
 
@@ -50,13 +39,31 @@ The installer will prompt you to choose:
 
 ## Usage
 
-In Claude Code, simply type:
+### In Claude Code
 
 ```
 /sprint-board
 ```
 
-The board displays all stories from `sprint-status.yaml` organized by status.
+The output is truncated by default. Press `Ctrl+O` to expand:
+
+![Claude Code truncated output](resource/claude_code_command_truncated.png)
+
+After expanding with `Ctrl+O`:
+
+![Claude Code full output](resource/claude_code_command_full_display.png)
+
+### In Terminal (recommended for full display)
+
+If you created the terminal shortcut during installation:
+
+```bash
+./sprint-board
+```
+
+Running directly in the terminal shows the full board with colors, without truncation.
+
+![Sprint Board in Terminal](resource/board_terminal.png)
 
 ## Windows Support
 
@@ -70,7 +77,7 @@ Sprint Board is fully supported on Windows via WSL (Windows Subsystem for Linux)
 
 ### Git Bash
 
-Git Bash support is **best-effort** and not guaranteed. Some features may not work correctly.
+Git Bash is supported. The installer automatically creates a wrapper script instead of a symlink for compatibility.
 
 ## Configuration
 
@@ -84,7 +91,7 @@ Environment variables to customize the display:
 
 Example:
 ```bash
-SPRINT_BOARD_COL_WIDTH=25 /sprint-board
+SPRINT_BOARD_COL_WIDTH=25 ./sprint-board
 ```
 
 ## Uninstall
@@ -94,6 +101,7 @@ SPRINT_BOARD_COL_WIDTH=25 /sprint-board
 ```bash
 rm ~/.claude/scripts/sprint-board.sh
 rm ~/.claude/commands/sprint-board.md
+rm ./sprint-board  # if shortcut was created
 ```
 
 ### Project Installation
@@ -101,6 +109,7 @@ rm ~/.claude/commands/sprint-board.md
 ```bash
 rm ./.claude/scripts/sprint-board.sh
 rm ./.claude/commands/sprint-board.md
+rm ./sprint-board  # if shortcut was created
 ```
 
 ## How It Works
