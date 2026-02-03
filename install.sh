@@ -210,8 +210,75 @@ echo -e "${BOLD}Files installed:${RESET}"
 echo "  - $SCRIPT_FILE"
 echo "  - $COMMAND_FILE"
 echo ""
+
+# Resolve absolute path for symlink
+if [[ "$mode" == "G" ]]; then
+    SYMLINK_TARGET="${HOME}/.claude/scripts/sprint-board.sh"
+else
+    # Get absolute path for project installation
+    SYMLINK_TARGET="$(cd "$(dirname "$SCRIPT_FILE")" && pwd)/$(basename "$SCRIPT_FILE")"
+fi
+
+# Ask about shortcut for direct terminal access
+echo -e "${BOLD}Create a shortcut for direct terminal access?${RESET}"
+echo -e "  This creates ${BLUE}./sprint-board${RESET} in the current directory"
+echo -e "  so you can run the board directly in your terminal."
+echo ""
+echo -n "Create shortcut? [Y/n]: "
+read -r create_shortcut < /dev/tty
+
+create_shortcut=$(echo "$create_shortcut" | tr '[:upper:]' '[:lower:]')
+
+if [[ "$create_shortcut" != "n" && "$create_shortcut" != "no" ]]; then
+    SHORTCUT_PATH="./sprint-board"
+
+    # Detect Windows Git Bash (MINGW/MSYS)
+    IS_GITBASH=false
+    if [[ "${OSTYPE:-}" == msys* ]] || [[ "${OSTYPE:-}" == mingw* ]] || [[ -n "${MSYSTEM:-}" ]]; then
+        IS_GITBASH=true
+    fi
+
+    # Function to create shortcut (symlink or wrapper script)
+    create_shortcut_file() {
+        if [[ "$IS_GITBASH" == "true" ]]; then
+            # Create wrapper script for Git Bash (symlinks are problematic)
+            cat > "$SHORTCUT_PATH" << WRAPPER
+#!/usr/bin/env bash
+# Sprint Board wrapper (created by installer)
+exec "$SYMLINK_TARGET" "\$@"
+WRAPPER
+            chmod +x "$SHORTCUT_PATH"
+            echo -e "  ${GREEN}✓ Wrapper script created: ./sprint-board${RESET}"
+        else
+            # Create symlink for macOS/Linux/WSL
+            ln -s "$SYMLINK_TARGET" "$SHORTCUT_PATH"
+            echo -e "  ${GREEN}✓ Symlink created: ./sprint-board${RESET}"
+        fi
+    }
+
+    # Check if shortcut already exists
+    if [[ -e "$SHORTCUT_PATH" || -L "$SHORTCUT_PATH" ]]; then
+        echo -n "  ./sprint-board already exists. Overwrite? [y/N]: "
+        read -r overwrite_shortcut < /dev/tty
+        overwrite_shortcut=$(echo "$overwrite_shortcut" | tr '[:upper:]' '[:lower:]')
+
+        if [[ "$overwrite_shortcut" == "y" || "$overwrite_shortcut" == "yes" ]]; then
+            rm -f "$SHORTCUT_PATH"
+            create_shortcut_file
+        else
+            echo -e "  ${YELLOW}Skipped shortcut creation${RESET}"
+        fi
+    else
+        create_shortcut_file
+    fi
+fi
+
+echo ""
 echo -e "${BOLD}Usage:${RESET}"
-echo "  In Claude Code, type: /sprint-board"
+echo "  In Claude Code:  /sprint-board"
+if [[ -e "./sprint-board" ]]; then
+    echo "  In terminal:     ./sprint-board"
+fi
 echo ""
 if [[ "$mode" == "G" ]]; then
     echo -e "${YELLOW}Note: The command is globally available, but requires BMAD to be${RESET}"
