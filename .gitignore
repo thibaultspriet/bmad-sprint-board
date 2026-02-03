@@ -1,0 +1,9 @@
+# BMAD development files (keep local, not distributed)
+_bmad/
+_bmad-output/
+
+# Local Claude commands (users generate via installer)
+.claude/
+
+# Sample files
+sprint-status-sample.yaml

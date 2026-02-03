@@ -34,8 +34,8 @@ else
     DIM=''
 fi
 
-# Column width for Kanban display
-COL_WIDTH=18
+# Column width for Kanban display (configurable via environment variable)
+COL_WIDTH="${SPRINT_BOARD_COL_WIDTH:-18}"
 
 # Box-drawing characters (F10: support ASCII fallback)
 USE_UNICODE=true
